@@ -1,4 +1,4 @@
-package ru.malevichrp.financetracker.ui.theme
+package ru.malevichrp.designsystem.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

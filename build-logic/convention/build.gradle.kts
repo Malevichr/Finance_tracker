@@ -21,7 +21,7 @@ dependencies {
 }
 gradlePlugin {
     plugins {
-        register("androidLibrart") {
+        register("androidLibrary") {
             id = libs.plugins.financetracker.android.library.get().pluginId
             implementationClass = "AndroidLibraryConventionPlugin"
         }

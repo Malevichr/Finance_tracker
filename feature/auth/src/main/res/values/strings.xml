@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="registration">Регистрация</string>
+    <string name="enter">Ввойти</string>
+    <string name="password">Пароль</string>
+    <string name="login">Логин</string>
+    <string name="entrance">Вход</string>
+</resources>

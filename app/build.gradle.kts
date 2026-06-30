@@ -62,4 +62,9 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":feature:auth"))
+
+    //for debug
+    implementation(project(":core:datastore"))
+    implementation(project(":core:model"))
+
 }

@@ -1,4 +1,4 @@
-package ru.malevichrp.auth.data
+package ru.malevichrp.data.auth
 
 import ru.malevichrp.datastore.TokenDataSource
 import ru.malevichrp.model.AuthTokens

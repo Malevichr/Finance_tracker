@@ -26,4 +26,12 @@ class AuthRepositoryImpl @Inject constructor(
             AuthResult.Error(e.message.toString())
         }
     }
+
+    override suspend fun register(
+        login: String,
+        email: String,
+        password: String
+    ): AuthResult {
+        TODO("Not yet implemented")
+    }
 }

@@ -17,4 +17,17 @@ class AuthRepositoryFake @Inject constructor() : AuthRepository {
         } else
             AuthResult.Success
     }
+
+    override suspend fun register(
+        login: String,
+        email: String,
+        password: String
+    ): AuthResult {
+        delay(500.milliseconds)
+        return if (shouldError) {
+            shouldError = false
+            AuthResult.Error("Error happened")
+        } else
+            AuthResult.Success
+    }
 }

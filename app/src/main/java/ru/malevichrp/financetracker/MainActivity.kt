@@ -37,6 +37,9 @@ import ru.malevichrp.auth.AuthScreen
 import ru.malevichrp.auth.AuthViewModel
 import ru.malevichrp.datastore.TokenDataSource
 import ru.malevichrp.designsystem.ui.theme.FinanceTrackerTheme
+import ru.malevichrp.registration.RegisterRoute
+import ru.malevichrp.registration.RegistrationScreen
+import ru.malevichrp.registration.RegistrationViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -92,8 +95,16 @@ fun FinanceNavHost(snackBarMessage: (String) -> Unit, navController: NavHostCont
                         launchSingleTop = true
                     }
                 },
-                onRegisterClick = { navController.navigate(HomeRoute) },
+                onRegisterClick = { navController.navigate(RegisterRoute) },
                 showErrorMessage = snackBarMessage
+            )
+        }
+        composable<RegisterRoute> {
+            RegistrationScreen(
+                viewModel = hiltViewModel<RegistrationViewModel>(),
+                onSuccessRegister = { navController.popBackStack() },
+                onBackClick = { navController.popBackStack() },
+                showMessage = snackBarMessage
             )
         }
         composable<HomeRoute> {
@@ -146,5 +157,6 @@ fun TokensDebugScreen(
 interface TokenDataSourceEntryPoint {
     fun tokenDataSource(): TokenDataSource
 }
+
 @Serializable
 object HomeRoute : NavKey

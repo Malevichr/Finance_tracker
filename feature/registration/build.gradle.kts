@@ -5,8 +5,9 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+
 android {
-    namespace = "ru.malevichrp.auth"
+    namespace = "ru.malevichrp.registration"
 
     buildFeatures {
         compose = true
@@ -34,5 +35,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(project(":core:data"))
-
 }

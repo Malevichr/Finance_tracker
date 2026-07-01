@@ -62,6 +62,7 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:registration"))
 
     //for debug
     implementation(project(":core:datastore"))

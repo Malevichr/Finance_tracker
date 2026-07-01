@@ -1,4 +1,4 @@
-package ru.malevichrp.auth.data
+package ru.malevichrp.data.auth
 
 sealed interface AuthResult {
     data object Success : AuthResult

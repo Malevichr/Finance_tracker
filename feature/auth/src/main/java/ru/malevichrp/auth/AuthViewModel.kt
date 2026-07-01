@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.malevichrp.auth.data.AuthRepository
-import ru.malevichrp.auth.data.AuthResult
+import ru.malevichrp.data.auth.AuthRepository
+import ru.malevichrp.data.auth.AuthResult
 import javax.inject.Inject
 
 @HiltViewModel

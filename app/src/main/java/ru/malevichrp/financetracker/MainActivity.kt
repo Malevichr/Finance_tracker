@@ -102,14 +102,9 @@ fun FinanceNavHost(snackBarMessage: (String) -> Unit, navController: NavHostCont
         composable<RegisterRoute> {
             RegistrationScreen(
                 viewModel = hiltViewModel<RegistrationViewModel>(),
-                onSuccessRegister = {
-                    navController.navigate(HomeRoute) {
-                        popUpTo<AuthRoute> { inclusive = true }
-                        launchSingleTop = true
-                    }
-                },
+                onSuccessRegister = { navController.popBackStack() },
                 onBackClick = { navController.popBackStack() },
-                showErrorMessage = snackBarMessage
+                showMessage = snackBarMessage
             )
         }
         composable<HomeRoute> {

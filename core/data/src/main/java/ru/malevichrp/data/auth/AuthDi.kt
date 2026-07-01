@@ -9,5 +9,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface AuthDi {
     @Binds
-    fun bindAuthRepository(repository: AuthRepositoryFake): AuthRepository
+    fun bindAuthRepository(repository: AuthRepositoryImpl): AuthRepository
 }

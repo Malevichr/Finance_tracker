@@ -31,7 +31,10 @@ class AuthRepositoryImpl @Inject constructor(
         login: String,
         email: String,
         password: String
-    ): AuthResult {
-        TODO("Not yet implemented")
+    ): AuthResult = try {
+        val response = authDataSource.register(login, email, password)
+        AuthResult.Success
+    } catch (e: Exception) {
+        AuthResult.Error(e.message.toString())
     }
 }

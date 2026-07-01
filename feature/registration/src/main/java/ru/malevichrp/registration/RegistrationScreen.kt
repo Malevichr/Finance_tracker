@@ -31,7 +31,7 @@ fun RegistrationScreen(
     viewModel: RegistrationViewModel,
     onSuccessRegister: () -> Unit,
     onBackClick: () -> Unit,
-    showErrorMessage: (String) -> Unit
+    showMessage: (String) -> Unit
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -40,16 +40,19 @@ fun RegistrationScreen(
     val emailTextFieldState = rememberTextFieldState()
     val passwordTextFieldState = rememberTextFieldState()
 
+    val successMessage = stringResource(R.string.successful_registration)
+
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             viewModel.uiEffect.collect { state ->
                 when (state) {
                     is RegisterUiEffect.SuccessRegister -> {
+                        showMessage(successMessage)
                         onSuccessRegister()
                     }
 
                     is RegisterUiEffect.ShowError -> {
-                        showErrorMessage(state.message)
+                        showMessage(state.message)
                     }
                 }
             }

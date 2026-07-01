@@ -14,4 +14,17 @@ class AuthNetworkDataSource @Inject constructor(
             password = password
         )
     }
+    suspend fun register(
+        login: String,
+        email: String,
+        password: String
+    ): UserResponse {
+        return authApi.register(
+            RegisterRequest(
+                username = login,
+                email = email,
+                password = password,
+            )
+        )
+    }
 }

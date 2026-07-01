@@ -6,4 +6,5 @@
     <string name="password">Пароль</string>
     <string name="register">Зарегистрироваться</string>
     <string name="back">Назад</string>
+    <string name="successful_registration">Успешная регистрация</string>
 </resources>

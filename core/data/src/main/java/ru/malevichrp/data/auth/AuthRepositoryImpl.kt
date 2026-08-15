@@ -2,7 +2,7 @@ package ru.malevichrp.data.auth
 
 import ru.malevichrp.datastore.TokenDataSource
 import ru.malevichrp.model.AuthTokens
-import ru.malevichrp.network.AuthNetworkDataSource
+import ru.malevichrp.network.auth.AuthNetworkDataSource
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -32,7 +32,7 @@ class AuthRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): AuthResult = try {
-        val response = authDataSource.register(login, email, password)
+        authDataSource.register(login, email, password)
         AuthResult.Success
     } catch (e: Exception) {
         AuthResult.Error(e.message.toString())

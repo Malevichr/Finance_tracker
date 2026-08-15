@@ -1,4 +1,4 @@
-package ru.malevichrp.network
+package ru.malevichrp.network.auth
 
 import javax.inject.Inject
 

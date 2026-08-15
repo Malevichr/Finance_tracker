@@ -1,4 +1,4 @@
-package ru.malevichrp.network
+package ru.malevichrp.network.auth
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

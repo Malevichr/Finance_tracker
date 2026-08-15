@@ -17,10 +17,11 @@ data class Operation(
     val amount: String,
     val description: String?,
     val date: LocalDate,
-    val categoryName: String,
-    val accountName: String,
+    val categoryName: String?,
+    val accountName: String?,
     val type: OperationType,
     val chainId: String?,
+    val operationsCount: Int? = null,
 )
 
 sealed interface OperationType {

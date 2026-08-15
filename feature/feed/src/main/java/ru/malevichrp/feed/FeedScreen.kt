@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,12 +34,14 @@ fun FeedScreen(
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val loadErrorMessage = stringResource(R.string.feed_load_error)
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.uiMessage
-                .collect { message ->
-                    showMessage(message)
+            viewModel.uiEffect.collect { effect ->
+                when (effect) {
+                    FeedUiEffect.LoadFailed -> showMessage(loadErrorMessage)
                 }
+            }
         }
     }
     FeedScreenUi(
@@ -51,7 +54,7 @@ fun FeedScreen(
 
 @Composable
 fun FeedScreenUi(
-    state: OperationsUiState,
+    state: FeedUiState,
     onBackClick: () -> Unit = {},
     onRetryClick: () -> Unit = {},
     navigateDetails: (String) -> Unit = {}
@@ -63,7 +66,7 @@ fun FeedScreenUi(
         }
     ) { paddingValues ->
         when (state) {
-            is OperationsUiState.Success ->
+            is FeedUiState.Success ->
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -83,14 +86,14 @@ fun FeedScreenUi(
                     }
                 }
 
-            is OperationsUiState.Error -> RetryComponent(
+            is FeedUiState.Error -> RetryComponent(
                 onRetryClick,
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues = paddingValues)
             )
 
-            is OperationsUiState.Loading -> LoadingComponent(
+            is FeedUiState.Loading -> LoadingComponent(
                 Modifier
                     .fillMaxSize()
                     .padding(paddingValues = paddingValues)
@@ -149,7 +152,9 @@ fun OperationCard(
                 style = MaterialTheme.typography.titleMedium
             )
 
-            Text(transactionData.category)
+            if (transactionData.category.isNotBlank()) {
+                Text(transactionData.category)
+            }
 
         }
         Text(

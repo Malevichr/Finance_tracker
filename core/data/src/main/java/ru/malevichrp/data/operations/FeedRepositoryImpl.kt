@@ -6,15 +6,15 @@ import ru.malevichrp.network.operations.FeedItemDto
 import java.time.LocalDate
 import javax.inject.Inject
 
-class OperationsRepositoryImpl @Inject constructor(
+class FeedRepositoryImpl @Inject constructor(
     private val feedApi: FeedApi,
-) : OperationsRepository {
-    override suspend fun load(): OperationsResult = try {
-        OperationsResult.Success(feedApi.getFeed().items.map(FeedItemDto::toDomain))
+) : FeedRepository {
+    override suspend fun load(): FeedResult = try {
+        FeedResult.Success(feedApi.getFeed().items.map(FeedItemDto::toDomain))
     } catch (exception: CancellationException) {
         throw exception
     } catch (exception: Exception) {
-        OperationsResult.Error(exception.message.orEmpty())
+        FeedResult.Error(exception.message.orEmpty())
     }
 }
 

@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import ru.malevichrp.data.operations.FeedRepository
+import ru.malevichrp.data.operations.FeedResult
 import ru.malevichrp.data.operations.Operation
-import ru.malevichrp.data.operations.OperationsRepository
-import ru.malevichrp.data.operations.OperationsResult
 import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val repository: OperationsRepository,
+    private val repository: FeedRepository,
 ) : ViewModel() {
     private val _uiEffect = MutableSharedFlow<FeedUiEffect>(extraBufferCapacity = 1)
     val uiEffect: SharedFlow<FeedUiEffect> = _uiEffect.asSharedFlow()
@@ -38,11 +38,11 @@ class FeedViewModel @Inject constructor(
         loadJob = viewModelScope.launch {
             _state.value = FeedUiState.Loading
             when (val result = repository.load()) {
-                is OperationsResult.Success -> {
+                is FeedResult.Success -> {
                     _state.value = FeedUiState.Success(result.list.toFeedListItems())
                 }
 
-                is OperationsResult.Error -> {
+                is FeedResult.Error -> {
                     _state.value = FeedUiState.Error
                     _uiEffect.emit(FeedUiEffect.LoadFailed)
                 }

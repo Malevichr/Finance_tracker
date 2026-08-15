@@ -12,10 +12,10 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import ru.malevichrp.data.operations.FeedRepository
+import ru.malevichrp.data.operations.FeedResult
 import ru.malevichrp.data.operations.Operation
 import ru.malevichrp.data.operations.OperationType
-import ru.malevichrp.data.operations.OperationsRepository
-import ru.malevichrp.data.operations.OperationsResult
 import java.time.LocalDate
 import java.util.ArrayDeque
 
@@ -36,8 +36,8 @@ class FeedViewModelTest {
     @Test
     fun `initialization loads operations`() = runTest(dispatcher) {
         val operation = operation("operation")
-        val repository = FakeOperationsRepository(
-            OperationsResult.Success(listOf(operation)),
+        val repository = FakeFeedRepository(
+            FeedResult.Success(listOf(operation)),
         )
 
         val viewModel = FeedViewModel(repository)
@@ -58,9 +58,9 @@ class FeedViewModelTest {
     @Test
     fun `retry performs another repository request after error`() = runTest(dispatcher) {
         val operation = operation("retry")
-        val repository = FakeOperationsRepository(
-            OperationsResult.Error("network failure"),
-            OperationsResult.Success(listOf(operation)),
+        val repository = FakeFeedRepository(
+            FeedResult.Error("network failure"),
+            FeedResult.Success(listOf(operation)),
         )
         val viewModel = FeedViewModel(repository)
         advanceUntilIdle()
@@ -83,14 +83,14 @@ class FeedViewModelTest {
     }
 }
 
-private class FakeOperationsRepository(
-    vararg results: OperationsResult,
-) : OperationsRepository {
+private class FakeFeedRepository(
+    vararg results: FeedResult,
+) : FeedRepository {
     private val results = ArrayDeque(results.toList())
     var loadCalls: Int = 0
         private set
 
-    override suspend fun load(): OperationsResult {
+    override suspend fun load(): FeedResult {
         loadCalls += 1
         return results.removeFirst()
     }

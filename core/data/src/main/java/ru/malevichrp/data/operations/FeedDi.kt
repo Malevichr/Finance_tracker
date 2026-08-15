@@ -7,9 +7,9 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface OperationsDi {
+interface FeedDi {
     @Binds
-    fun bindOperationsRepository(
-        repository: OperationsRepositoryImpl,
-    ): OperationsRepository
+    fun bindFeedRepository(
+        repository: FeedRepositoryImpl,
+    ): FeedRepository
 }

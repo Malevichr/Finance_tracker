@@ -2,14 +2,13 @@ package ru.malevichrp.data.operations
 
 import java.time.LocalDate
 
-
-interface OperationsRepository {
-    suspend fun load(): OperationsResult
+interface FeedRepository {
+    suspend fun load(): FeedResult
 }
 
-sealed interface OperationsResult {
-    data class Success(val list: List<Operation>) : OperationsResult
-    data class Error(val exception: String) : OperationsResult
+sealed interface FeedResult {
+    data class Success(val list: List<Operation>) : FeedResult
+    data class Error(val exception: String) : FeedResult
 }
 
 data class Operation(

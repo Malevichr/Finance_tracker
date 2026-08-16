@@ -2,4 +2,5 @@
 <resources>
     <string name="retry_load">Повторить загрузку</string>
     <string name="back">Назад</string>
+    <string name="feed_load_error">Не удалось загрузить операции</string>
 </resources>

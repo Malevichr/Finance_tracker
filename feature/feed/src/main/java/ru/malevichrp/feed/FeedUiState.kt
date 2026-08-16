@@ -5,3 +5,7 @@ sealed interface FeedUiState {
     data class Success(val data: List<FeedListItem>) : FeedUiState
     data object Error : FeedUiState
 }
+
+sealed interface FeedUiEffect {
+    data object LoadFailed : FeedUiEffect
+}

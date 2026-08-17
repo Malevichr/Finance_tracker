@@ -1,11 +1,15 @@
 package ru.malevichrp.feed
 
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -81,18 +85,75 @@ class FeedViewModelTest {
             viewModel.state.value,
         )
     }
+
+    @Test
+    fun `two load calls - one repository load call`() = runTest(dispatcher) {
+        val repository = FakeFeedRepository(
+            FeedResult.Error("network failure"),
+            suspendLoad = true
+        )
+        val viewModel = FeedViewModel(repository)
+
+        advanceUntilIdle()
+        assertEquals(FeedUiState.Loading, viewModel.state.value)
+        assertEquals(1, repository.loadCalls)
+
+        viewModel.load()
+        assertEquals(FeedUiState.Loading, viewModel.state.value)
+        assertEquals(1, repository.loadCalls)
+
+        repository.returnResult()
+        advanceUntilIdle()
+
+        assertEquals(1, repository.loadCalls)
+        assertEquals(
+            FeedUiState.Error,
+            viewModel.state.value,
+        )
+    }
+
+    @Test
+    fun `error result - uiEffect LoadFailed`() = runTest(dispatcher) {
+        val repository = FakeFeedRepository(
+            FeedResult.Error("network failure")
+        )
+        val viewModel = FeedViewModel(repository)
+        val errorMessages = mutableListOf<FeedUiEffect>()
+        backgroundScope.launch(
+            start = CoroutineStart.UNDISPATCHED
+        ) {
+            viewModel.uiEffect.collect {
+                errorMessages.add(it)
+            }
+        }
+        runCurrent()
+        assertEquals(
+            FeedUiState.Error,
+            viewModel.state.value,
+        )
+
+        assertEquals(listOf(FeedUiEffect.LoadFailed), errorMessages)
+    }
 }
 
 private class FakeFeedRepository(
     vararg results: FeedResult,
+    private val suspendLoad: Boolean = false,
 ) : FeedRepository {
     private val results = ArrayDeque(results.toList())
+    private val gate = CompletableDeferred<Unit>()
     var loadCalls: Int = 0
         private set
 
     override suspend fun load(): FeedResult {
         loadCalls += 1
+        if (suspendLoad)
+            gate.await()
         return results.removeFirst()
+    }
+
+    fun returnResult() {
+        gate.complete(Unit)
     }
 }
 

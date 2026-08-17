@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Finance tracker</string>
+    <string name="nothing_here_yet">Здесь пока ничего нет</string>
 </resources>
